@@ -1,0 +1,21 @@
+body {
+}
+
+.gameborder {
+  height: 2000px;
+  width: 3000px;
+  border: 10px solid black;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-template-rows: repeat(auto-fill, 100px);
+}
+
+#him {
+  height: 100px;
+  width: 100px;
+  border-radius: 50px;
+  border: 5px solid rgb(118, 21, 21);
+  background-color: red;
+ 
+}
