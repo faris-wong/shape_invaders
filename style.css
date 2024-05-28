@@ -1,7 +1,7 @@
 body {
 }
 
-.gameborder {
+#gameborder {
   height: 2000px;
   width: 3000px;
   border: 10px solid black;
@@ -11,11 +11,16 @@ body {
   grid-template-rows: repeat(auto-fill, 100px);
 }
 
+#position {
+  background-color: white;
+  /*grid-row: 12;*/
+  /*grid-column: 21;*/
+}
+
 #him {
-  height: 100px;
-  width: 100px;
+  height: 90px;
+  width: 90px;
   border-radius: 50px;
   border: 5px solid rgb(118, 21, 21);
   background-color: red;
- 
 }

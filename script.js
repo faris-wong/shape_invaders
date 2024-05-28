@@ -11,11 +11,37 @@ function rng(chance) {
 
 //const arrowkey = document.addEventListener("keypress", movement());
 
-function movement(currentPos, event){
+const him = document.getElementById("him");
+const position = document.getElementById("position");
 
+// y-axis
+position.style.gridRowStart = 20;
+// x-axis
+position.style.gridColumnStart = 15;
 
+function movement(event) {
+  event.preventDefault();
+  if (event.key === "w") {
+    position.style.gridRowStart = Number(position.style.gridRowStart) - 1;
+  }
+  if (event.key === "a") {
+    position.style.gridColumnStart = Number(position.style.gridColumnStart) - 1;
+  }
+  if (event.key === "s") {
+    if (position.style.gridRowStart <= 19) {
+      position.style.gridRowStart = Number(position.style.gridRowStart) + 1;
+    }
+  }
+  if (event.key === "d") {
+    if (position.style.gridColumnStart <= 29) {
+      position.style.gridColumnStart =
+        Number(position.style.gridColumnStart) + 1;
+    }
+  }
 }
 
-const him = document.
-const position1 = document.getElementsByClassName('position-1')
-const position2 = document.getElementsByClassName('position-2')
+document.addEventListener("keydown", (e) => movement(e));
+
+function shoot(event) {
+  event.preventDefault();
+}
