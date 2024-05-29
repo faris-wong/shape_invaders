@@ -1,3 +1,5 @@
+const enemyGroup = [];
+
 function rng(chance) {
   const roll = Math.floor(Math.random() * 100);
   if (roll <= chance) {
@@ -41,7 +43,7 @@ function movement(event) {
   }
 }
 
-document.addEventListener("keydown", (e) => movement(e));
+document.addEventListener("keydown", movement);
 
 function attack(event) {
   event.preventDefault();
@@ -52,7 +54,7 @@ function attack(event) {
 
 // ------------SHOOTING--------------
 
-document.addEventListener("keydown", (e) => attack(e));
+document.addEventListener("keydown", attack);
 
 const bulletDamage = 1;
 
@@ -76,7 +78,9 @@ function projectileFly() {
       bullet.style.gridRowStart = Number(bullet.style.gridRowStart) - 1;
       //console.log(bullet.style.gridRowStart);
       setTimeout(projectileFly, 200);
-      hit();
+      for (let i = 0; i < enemyGroup.length; i++) {
+        enemyGroup[i].hit(bullet);
+      }
     } else {
       bullet.remove();
     }
@@ -85,48 +89,48 @@ function projectileFly() {
 
 //------------------------------------------
 
-let spawnEnemy;
 let Enemies;
 
-class enemy {
-  constructor(hp = 3) {
+class Enemy {
+  constructor(hp = 5) {
     this.hp = hp;
-  }
-  spawn(num) {
-    for (let i = 0; i < num; i++) {
-      //console.log(spawnEnemy)
-      spawnEnemy = document.createElement("div");
-      spawnEnemy.classList.add("enemy");
-      gameBorder.appendChild(spawnEnemy);
-      spawnEnemy.style.gridRowStart = Math.floor(Math.random() * 5 + 1);
-      //console.log(`y` + Math.floor(Math.random() * 5));
-      spawnEnemy.style.gridColumnStart = Math.floor(Math.random() * 30 + 1);
-      //console.log(`x` + (Math.floor(Math.random() * 24 - 6) + 6));
-      spawnEnemy.innerText = this.hp;
+    this.spawnEnemy = document.createElement("div");
+    this.spawnEnemy.classList.add("enemy");
+    gameBorder.appendChild(this.spawnEnemy);
+    this.spawnEnemy.style.gridRowStart = Math.floor(Math.random() * 5 + 1);
+    this.spawnEnemy.style.gridColumnStart = Math.floor(Math.random() * 30 + 1);
+    this.spawnEnemy.innerText = this.hp
     }
-  }
-}
+  
 
-const dog = new enemy();
-
-dog.spawn(2);
-
-function hit() {
-  //console.log(bullet);
-  //console.log(spawnEnemy);
-  Enemies = document.querySelectorAll(".enemy");
-  for (const chicken of Enemies) {
+  hit(bullet) {
+    //Enemies = document.querySelectorAll(".enemy");
+    //for (const oneEnemy of Enemies) {
     if (
-      bullet.style.gridRowStart === chicken.style.gridRowStart &&
-      bullet.style.gridColumnStart === chicken.style.gridColumnStart
+      bullet.style.gridRowStart === this.spawnEnemy.style.gridRowStart &&
+      bullet.style.gridColumnStart === this.spawnEnemy.style.gridColumnStart
     ) {
-      //console.log(dog);
-      //console.log(dog.hp);
-      //console.log(bulletDamage)
-      dog.hp = dog.hp - bulletDamage;
-      dog.innerText = dog.hp;
+      this.hp = this.hp - bulletDamage;
+      this.spawnEnemy.innerText = this.hp;
+      if (this.hp === 0){
+        this.spawnEnemy.remove();
+      }
       console.log("hit");
       bullet.remove();
     }
   }
 }
+
+
+// WHEN GAME INITIALIZES ----------------------
+
+function spawnMultiple(num) {
+  for (let i = 0; i < num; i++) {
+    const enemy = new Enemy();
+    enemyGroup.push(enemy);
+    // enemy.spawn();
+  }
+}
+
+spawnMultiple(7);
+
