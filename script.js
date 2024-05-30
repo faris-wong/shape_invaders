@@ -1,6 +1,9 @@
 const enemyGroup = [];
 let spawnEnemy;
+let ammo;
+let life;
 
+/*
 function rng(chance) {
   const roll = Math.floor(Math.random() * 100);
   if (roll <= chance) {
@@ -11,12 +14,15 @@ function rng(chance) {
     //return active === false
   }
 }
+*/
 
-//const arrowkey = document.addEventListener("keypress", movement());
+// ALL EVENT LISTENERS -----------------------------------------------
 
 const him = document.getElementById("him");
+const stats = document.getElementById("stats");
 const position = document.getElementById("position");
 const gameBorder = document.getElementById("gameborder");
+const startButton = document.getElementById("startbutton");
 
 // y-axis (top to bottom 1-20)
 position.style.gridRowStart = 20;
@@ -42,6 +48,9 @@ function movement(event) {
         Number(position.style.gridColumnStart) + 1;
     }
   }
+  enemyGroup.forEach((chicken) => {
+    checkLife(chicken.spawnEnemy);
+  });
 }
 
 document.addEventListener("keydown", movement);
@@ -50,7 +59,78 @@ function attack(event) {
   event.preventDefault();
   if (event.key === " ") {
     createProjectile();
+    ammo = ammo - 1;
+    document.querySelector(".ammoCount").innerText = ammo;
+    checkWinorLose();
   }
+}
+
+startButton.addEventListener("click", startGame);
+
+function startGame() {
+  chooseDifficulty();
+  startButton.disabled = true;
+}
+
+function chooseDifficulty() {
+  for (let i = 1; i < 4; i++) {
+    let difficulty = document.createElement("button");
+    difficulty.classList.add("button");
+    stats.appendChild(difficulty);
+    if (i == 1) {
+      difficulty.innerText = "Easy";
+      difficulty.addEventListener("click", () => {
+        spawnMultiple(5);
+        setAmmo(50);
+        setLife(3);
+        document.querySelectorAll(".button").forEach((button) => {
+          button.disabled = true;
+        });
+      });
+    }
+    if (i == 2) {
+      difficulty.innerText = "Medium";
+      difficulty.addEventListener("click", () => {
+        spawnMultiple(10);
+        setAmmo(80);
+        setLife(2);
+        document.querySelectorAll(".button").forEach((button) => {
+          button.disabled = true;
+      })});
+    }
+    if (i == 3) {
+      difficulty.innerText = "Hard";
+      difficulty.addEventListener("click", () => {
+        spawnMultiple(20);
+        setAmmo(110);
+        setLife(1);
+        document.querySelectorAll(".button").forEach((button) => {
+          button.disabled = true;
+      })});
+    }
+  }
+}
+
+//-------------LIFE--------------------------
+
+function setLife(num) {
+  life = num;
+  document.querySelector(".lifeCount").innerText = life;
+}
+
+function checkLife(chicken) {
+  // for (const enemii of enemyGroup) {
+  if (
+    Number(position.style.gridRowStart) ===
+      Number(chicken.style.gridRowStart) &&
+    Number(position.style.gridColumnStart) ===
+      Number(chicken.style.gridColumnStart)
+  ) {
+    life = life - 1;
+    setLife(life);
+    checkWinorLose();
+  }
+  // }
 }
 
 // ------------SHOOTING--------------
@@ -74,16 +154,14 @@ function createProjectile() {
 function projectileFly() {
   bullets = document.querySelectorAll(".bullet");
   for (const bullet of bullets) {
-    //console.log(bullet);
     if (bullet.style.gridRowStart != 1) {
       bullet.style.gridRowStart = Number(bullet.style.gridRowStart) - 1;
-      //console.log(bullet.style.gridRowStart);
       setTimeout(projectileFly, 300);
       for (let i = 0; i < enemyGroup.length; i++) {
         enemyGroup[i].hit(bullet);
-        console.log(enemyGroup);
         if (enemyGroup[i].hp === 0) {
           enemyGroup.splice(i, 1);
+          checkWinorLose();
         }
       }
     } else {
@@ -92,7 +170,7 @@ function projectileFly() {
   }
 }
 
-//------------------------------------------
+// ENEMY CLASS------------------------------------------
 
 class Enemy {
   constructor(hp = 5) {
@@ -103,59 +181,11 @@ class Enemy {
     this.spawnEnemy.style.gridRowStart = Math.floor(Math.random() * 5 + 1);
     this.spawnEnemy.style.gridColumnStart = Math.floor(Math.random() * 30 + 1);
     this.spawnEnemy.innerText = this.hp;
-    //this.direction = "right";
-
     setInterval(() => {
       this.enemyMovement();
+      checkLife(this.spawnEnemy);
     }, 1000);
   }
-
-  // enemyMoving() {
-  //   if (
-  //     this.direction === "right" &&
-  //     this.spawnEnemy.style.gridColumnStart < 30
-  //   ) {
-  //     this.spawnEnemy.style.gridColumnStart =
-  //       parseInt(this.spawnEnemy.style.gridColumnStart) + 1;
-  //   } else if (
-  //     this.direction === "left" &&
-  //     this.spawnEnemy.style.gridColumnStart > 1
-  //   ) {
-  //     this.spawnEnemy.style.gridColumnStart =
-  //       parseInt(this.spawnEnemy.style.gridColumnStart) - 1;
-  //   } else if (
-  //     this.direction === "right" &&
-  //     this.spawnEnemy.style.gridColumnStart == 30
-  //   ) {
-  //     this.direction = "left";
-  //   } else if (
-  //     this.direction === "left" &&
-  //     this.spawnEnemy.style.gridColumnStart == 1
-  //   ) {
-  //     this.direction = "right";
-  //   }
-  // }
-
-  /*
-  enemyMovement() {
-    //console.log(this.spawnEnemy);
-    //console.log(this.spawnEnemy.style.gridRowStart);
-
-    if (
-      this.spawnEnemy.style.gridRowStart > 2 &&
-      this.spawnEnemy.style.gridRowStart < 19
-    ) {
-      this.spawnEnemy.style.gridRowStart =
-        parseInt(this.spawnEnemy.style.gridRowStart) +
-        (Math.random() > 0.5 ? -1 : 1);
-      console.log(this.spawnEnemy.style.gridRowStart);
-    } else if (this.spawnEnemy.style.gridRowStart <= 2) {
-      this.spawnEnemy.style.gridRowStart =
-        parseInt(this.spawnEnemy.style.gridRowStart) + 1;
-    }
-
-  }
-*/
 
   enemyMovement() {
     if (this.spawnEnemy.style.gridRowStart == 1) {
@@ -201,26 +231,57 @@ class Enemy {
       this.spawnEnemy.innerText = this.hp;
       this.spawnEnemy.classList.add("onHit");
       setTimeout(() => {
-        this.spawnEnemy.classList.remove("onHit"), 1000;
-      });
-
+        this.spawnEnemy.classList.remove("onHit");
+      }, 5000);
       setTimeout;
       if (this.hp === 0) {
         this.spawnEnemy.remove();
       }
-      console.log("hit");
       bullet.remove();
     }
   }
 }
+// AMMO -------------------------------------------------------------
+
+function setAmmo(num) {
+  ammo = num;
+  document.querySelector(".ammoCount").innerText = ammo;
+}
+
+// WIN LOSE CONDITION ---------------------------------------
+
 // WHEN GAME INITIALIZES ----------------------
 
 function spawnMultiple(num) {
   for (let i = 0; i < num; i++) {
-    const enemy = new Enemy();
+    const enemy = new Enemy(/*Math.floor(Math.random()*8)+1*/);
     enemyGroup.push(enemy);
-    console.log(spawnEnemy);
   }
 }
 
-spawnMultiple(15);
+function checkWinorLose() {
+  if (enemyGroup.length == 0) {
+    alert("win");
+    resetGame();
+  }
+  if (ammo == 0 || life == 0) {
+    alert("lose");
+    resetGame();
+  }
+}
+
+
+
+function resetGame(){
+  for (const enemiii of enemyGroup){
+    enemyGroup.pop()
+  };
+  console.log(enemyGroup);
+  const allEnemies = document.querySelectorAll('enemy');
+  document.remove(allEnemies);
+  const difficultyButtons = document.getElementsByClassName("button")
+  document.remove(difficultyButtons);
+ 
+  
+}
+
