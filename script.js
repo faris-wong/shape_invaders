@@ -16,13 +16,13 @@ function rng(chance) {
 }
 */
 
-// ALL EVENT LISTENERS -----------------------------------------------
-
 const him = document.getElementById("him");
 const stats = document.getElementById("stats");
 const position = document.getElementById("position");
 const gameBorder = document.getElementById("gameborder");
 const startButton = document.getElementById("startbutton");
+
+//------------MOVEMENT------------------------------
 
 // y-axis (top to bottom 1-20)
 position.style.gridRowStart = 20;
@@ -65,6 +65,8 @@ function attack(event) {
   }
 }
 
+//----------------------- GAME ---------------------------
+
 startButton.addEventListener("click", startGame);
 
 function startGame() {
@@ -81,7 +83,7 @@ function chooseDifficulty() {
       difficulty.innerText = "Easy";
       difficulty.addEventListener("click", () => {
         spawnMultiple(5);
-        setAmmo(50);
+        setAmmo(90);
         setLife(3);
         document.querySelectorAll(".button").forEach((button) => {
           button.disabled = true;
@@ -92,25 +94,62 @@ function chooseDifficulty() {
       difficulty.innerText = "Medium";
       difficulty.addEventListener("click", () => {
         spawnMultiple(10);
-        setAmmo(80);
+        setAmmo(110);
         setLife(2);
         document.querySelectorAll(".button").forEach((button) => {
           button.disabled = true;
-      })});
+        });
+      });
     }
     if (i == 3) {
       difficulty.innerText = "Hard";
       difficulty.addEventListener("click", () => {
         spawnMultiple(20);
-        setAmmo(110);
+        setAmmo(130);
         setLife(1);
         document.querySelectorAll(".button").forEach((button) => {
           button.disabled = true;
-      })});
+        });
+      });
     }
   }
 }
 
+function setAmmo(num) {
+  ammo = num;
+  document.querySelector(".ammoCount").innerText = ammo;
+}
+
+function spawnMultiple(num) {
+  for (let i = 0; i < num; i++) {
+    const enemy = new Enemy(/*Math.floor(Math.random()*8)+1*/);
+    enemyGroup.push(enemy);
+  }
+}
+
+function checkWinorLose() {
+  if (enemyGroup.length == 0) {
+    alert("win");
+    location.reload();
+  }
+  if (ammo == 0 || life == 0) {
+    alert("lose");
+    location.reload();
+  }
+}
+/*
+function resetGame() {
+  for (let i = 0; i < allEnemies.length; i++) {
+    allEnemies[i].remove();
+  }
+
+  const difficultyButtons = document.getElementsByClassName("button");
+  document.remove(difficultyButtons);
+  document.remove(spawnEnemy);
+  console.log(spawnEnemy);
+}
+
+*/
 //-------------LIFE--------------------------
 
 function setLife(num) {
@@ -170,7 +209,7 @@ function projectileFly() {
   }
 }
 
-// ENEMY CLASS------------------------------------------
+// --------------ENEMY CLASS------------------------------------------
 
 class Enemy {
   constructor(hp = 5) {
@@ -221,7 +260,6 @@ class Enemy {
         (Math.floor(Math.random() * 3) - 1);
     }
   }
-
   hit(bullet) {
     if (
       bullet.style.gridRowStart === this.spawnEnemy.style.gridRowStart &&
@@ -241,47 +279,3 @@ class Enemy {
     }
   }
 }
-// AMMO -------------------------------------------------------------
-
-function setAmmo(num) {
-  ammo = num;
-  document.querySelector(".ammoCount").innerText = ammo;
-}
-
-// WIN LOSE CONDITION ---------------------------------------
-
-// WHEN GAME INITIALIZES ----------------------
-
-function spawnMultiple(num) {
-  for (let i = 0; i < num; i++) {
-    const enemy = new Enemy(/*Math.floor(Math.random()*8)+1*/);
-    enemyGroup.push(enemy);
-  }
-}
-
-function checkWinorLose() {
-  if (enemyGroup.length == 0) {
-    alert("win");
-    resetGame();
-  }
-  if (ammo == 0 || life == 0) {
-    alert("lose");
-    resetGame();
-  }
-}
-
-
-
-function resetGame(){
-  for (const enemiii of enemyGroup){
-    enemyGroup.pop()
-  };
-  console.log(enemyGroup);
-  const allEnemies = document.querySelectorAll('enemy');
-  document.remove(allEnemies);
-  const difficultyButtons = document.getElementsByClassName("button")
-  document.remove(difficultyButtons);
- 
-  
-}
-
