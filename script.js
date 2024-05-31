@@ -2,70 +2,13 @@ const enemyGroup = [];
 let spawnEnemy;
 let ammo;
 let life;
-
-/*
-function rng(chance) {
-  const roll = Math.floor(Math.random() * 100);
-  if (roll <= chance) {
-    console.log(`${roll}` + ` true`);
-    //return active === true;
-  } else {
-    console.log(`${roll}` + ` false`);
-    //return active === false
-  }
-}
-*/
-
 const him = document.getElementById("him");
 const stats = document.getElementById("stats");
 const position = document.getElementById("position");
 const gameBorder = document.getElementById("gameborder");
 const startButton = document.getElementById("startbutton");
 
-//------------MOVEMENT------------------------------
-
-// y-axis (top to bottom 1-20)
-position.style.gridRowStart = 20;
-// x-axis (left to right 1-30)
-position.style.gridColumnStart = 15;
-
-function movement(event) {
-  event.preventDefault();
-  if (event.key === "ArrowUp") {
-    position.style.gridRowStart = Number(position.style.gridRowStart) - 1;
-  }
-  if (event.key === "ArrowLeft") {
-    position.style.gridColumnStart = Number(position.style.gridColumnStart) - 1;
-  }
-  if (event.key === "ArrowDown") {
-    if (position.style.gridRowStart <= 19) {
-      position.style.gridRowStart = Number(position.style.gridRowStart) + 1;
-    }
-  }
-  if (event.key === "ArrowRight") {
-    if (position.style.gridColumnStart <= 29) {
-      position.style.gridColumnStart =
-        Number(position.style.gridColumnStart) + 1;
-    }
-  }
-  enemyGroup.forEach((chicken) => {
-    checkLife(chicken.spawnEnemy);
-  });
-}
-
-document.addEventListener("keydown", movement);
-
-function attack(event) {
-  event.preventDefault();
-  if (event.key === " ") {
-    createProjectile();
-    ammo = ammo - 1;
-    document.querySelector(".ammoCount").innerText = ammo;
-    checkWinorLose();
-  }
-}
-
-//----------------------- GAME ---------------------------
+//-----------------------START GAME ---------------------------
 
 startButton.addEventListener("click", startGame);
 
@@ -137,19 +80,49 @@ function checkWinorLose() {
     location.reload();
   }
 }
-/*
-function resetGame() {
-  for (let i = 0; i < allEnemies.length; i++) {
-    allEnemies[i].remove();
-  }
+//------------MOVEMENT------------------------------
 
-  const difficultyButtons = document.getElementsByClassName("button");
-  document.remove(difficultyButtons);
-  document.remove(spawnEnemy);
-  console.log(spawnEnemy);
+// y-axis (top to bottom 1-20)
+position.style.gridRowStart = 20;
+// x-axis (left to right 1-30)
+position.style.gridColumnStart = 15;
+
+function movement(event) {
+  event.preventDefault();
+  if (event.key === "ArrowUp") {
+    position.style.gridRowStart = Number(position.style.gridRowStart) - 1;
+  }
+  if (event.key === "ArrowLeft") {
+    position.style.gridColumnStart = Number(position.style.gridColumnStart) - 1;
+  }
+  if (event.key === "ArrowDown") {
+    if (position.style.gridRowStart <= 19) {
+      position.style.gridRowStart = Number(position.style.gridRowStart) + 1;
+    }
+  }
+  if (event.key === "ArrowRight") {
+    if (position.style.gridColumnStart <= 29) {
+      position.style.gridColumnStart =
+        Number(position.style.gridColumnStart) + 1;
+    }
+  }
+  enemyGroup.forEach((chicken) => {
+    checkLife(chicken.spawnEnemy);
+  });
 }
 
-*/
+document.addEventListener("keydown", movement);
+
+function attack(event) {
+  event.preventDefault();
+  if (event.key === " ") {
+    createProjectile();
+    ammo = ammo - 1;
+    document.querySelector(".ammoCount").innerText = ammo;
+    checkWinorLose();
+  }
+}
+
 //-------------LIFE--------------------------
 
 function setLife(num) {
@@ -158,7 +131,6 @@ function setLife(num) {
 }
 
 function checkLife(chicken) {
-  // for (const enemii of enemyGroup) {
   if (
     Number(position.style.gridRowStart) ===
       Number(chicken.style.gridRowStart) &&
@@ -169,7 +141,6 @@ function checkLife(chicken) {
     setLife(life);
     checkWinorLose();
   }
-  // }
 }
 
 // ------------SHOOTING--------------
@@ -279,3 +250,16 @@ class Enemy {
     }
   }
 }
+
+/*
+function rng(chance) {
+  const roll = Math.floor(Math.random() * 100);
+  if (roll <= chance) {
+    console.log(`${roll}` + ` true`);
+    //return active === true;
+  } else {
+    console.log(`${roll}` + ` false`);
+    //return active === false
+  }
+}
+*/

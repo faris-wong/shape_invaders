@@ -1,5 +1,13 @@
 body {
-}
+  background-image: url(https://images.unsplash.com/photo-1465101162946-4377e57745c3?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3BhY2UlMjBiYWNrZ3JvdW5kfGVufDB8fDB8fHww);
+  background-size: cover;
+  color: yellow;
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 300;
+  font-style: normal;
+  }
+  
+
 
 .container {
   display: flex;
@@ -9,39 +17,67 @@ body {
   top: 0;
   font-size: 130px;
   height: 2000px;
-  width: 1000px;
-  border: solid 10px black;
+  width: 1500px;
+  border: solid 50px black;
 }
 
-#startbutton{
-  background-color: #0f855a; 
-  border: solid 5px black;
-  color: white;
-  padding: 10px 30px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 150px;
-  cursor: pointer;
 
+.info{
+border: solid 11px black;
+font-size: 80px;
+
+}
+
+
+
+#startbutton{
+  align-items: center;
+  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  border: 0;
+  border-radius: 50px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  font-family: Phantomsans, sans-serif;
+  font-size: 120px;
+  justify-content: center;
+  line-height: 1em;
+  max-width: 100%;
+  min-width: 140px;
+  padding: 19px 24px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+  
 }
 
 .button{
-  background-color: #0f855a; 
-  border: solid 5px black;
-  color: white;
-  padding: 10px 30px;
-  text-align: center;
+  align-items: center;
+  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  border: 0;
+  border-radius: 50px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  font-family: Phantomsans, sans-serif;
+  font-size: 120px;
+  justify-content: center;
+  line-height: 1em;
+  max-width: 100%;
+  min-width: 140px;
+  padding: 19px 24px;
   text-decoration: none;
-  display: inline-block;
-  font-size: 150px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
   cursor: pointer;
 }
-
-
-
-
-
 
 
 
@@ -51,7 +87,7 @@ body {
   background-size: cover;
   height: 2000px;
   width: 3000px;
-  border: 10px solid black;
+  border: 20px solid rgb(54, 66, 152);
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
@@ -60,16 +96,15 @@ body {
 
 #position {
   background-color: white;
-  /*grid-row: 12;*/
-  /*grid-column: 21;*/
 }
 
 #him {
+  background-image: url(https://static.vecteezy.com/system/resources/previews/035/982/419/original/ai-generated-3d-flying-rocket-isolated-on-transparent-background-free-png.png);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   height: 90px;
   width: 90px;
-  border-radius: 50px;
-  border: 5px solid rgb(118, 21, 21);
-  background-color: rgb(111, 213, 22);
 }
 
 .bullet {
@@ -84,8 +119,9 @@ body {
 .enemy {
   height: 100px;
   width: 100px;
+  color: black;
+  border: 2px solid yellow;
   background-color: yellow;
-  border: solid 2px black;
   font-size: 80px;
   margin: auto;
   text-align: center;
@@ -97,12 +133,24 @@ body {
 
 @keyframes changeColor {
   0% {
-    background-color: red;
+    background-color: rgb(209, 3, 3);
+    border: rgb(209, 3, 3);
+  }
+  25%{
+    background-color:rgb(255, 50, 50);
+    border:rgb(255, 50, 50);
+
   }
   50% {
-    background: orange;
+    background: rgb(227, 148, 0);
+    border: rgb(227, 148, 0);
+  }
+  75%{
+    background-color:rgb(217, 200, 51);
+    border:rgb(217, 200, 51);
   }
   100% {
     background: yellow;
+    border: yellow
   }
 }

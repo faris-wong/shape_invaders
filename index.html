@@ -5,14 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project 1 Shape Invaders</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="container">
       <div id="stats">
         <span>Ammo:<div class="ammoCount"></div></span>
         <span>Life:<div class="lifeCount"></div></span>
-        <span></span>
-        <span><button id="startbutton">START</button></span>
+        <span><div class="rules info">Rules:<br>
+          Select start and pick a level. Avoid squares and shoot them before running out of ammo and life
+        </div>
+        </span>
+        <span><div class="controls info">Controls:<br>
+          Move: Arrow keys</br>Shoot: Spacebar
+        </div>
+        </span>
+        <span><button id="startbutton">Start</button></span>
       </div>
       <div id="gameborder">
         <div id="position">
