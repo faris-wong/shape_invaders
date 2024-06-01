@@ -2,9 +2,11 @@ const enemyGroup = [];
 let spawnEnemy;
 let ammo;
 let life;
+let dropStuff = "false";
+let power;
 const him = document.getElementById("him");
-const stats = document.getElementById("stats");
-const position = document.getElementById("position");
+const stats = document.getElementById("stats"); // to update ammo and life values
+const position = document.getElementById("position"); // for movement of character
 const gameBorder = document.getElementById("gameborder");
 const startButton = document.getElementById("startbutton");
 
@@ -72,11 +74,11 @@ function spawnMultiple(num) {
 
 function checkWinorLose() {
   if (enemyGroup.length == 0) {
-    alert("win");
+    alert("YOU WIN !!!! :)");
     location.reload();
   }
   if (ammo == 0 || life == 0) {
-    alert("lose");
+    alert("YOU LOSE  T_T");
     location.reload();
   }
 }
@@ -169,6 +171,7 @@ function projectileFly() {
       setTimeout(projectileFly, 300);
       for (let i = 0; i < enemyGroup.length; i++) {
         enemyGroup[i].hit(bullet);
+        enemyGroup[i].dropCheck(bullet);
         if (enemyGroup[i].hp === 0) {
           enemyGroup.splice(i, 1);
           checkWinorLose();
@@ -249,17 +252,50 @@ class Enemy {
       bullet.remove();
     }
   }
+
+  dropCheck(bullet) {
+    if (
+      bullet.style.gridRowStart === this.spawnEnemy.style.gridRowStart &&
+      bullet.style.gridColumnStart === this.spawnEnemy.style.gridColumnStart
+    ) {
+      rng(10);
+      if (dropStuff == "true") {
+        this.drop();
+      }
+    }
+  }
+
+  drop() {
+    power = document.createElement("div");
+    power.classList.add("power");
+    gameBorder.appendChild(power);
+    power.style.gridRowStart = Number(this.spawnEnemy.style.gridRowStart);
+    power.style.gridColumnStart = Number(this.spawnEnemy.style.gridColumnStart);
+    function dropDownwards() {
+      power.style.gridRowStart = Number(power.style.gridRowStart) + 1;
+      if (power.style.gridRowStart < 20) {
+        setTimeout(dropDownwards, 300);
+        if (power.style.gridRowStart >= 20) {
+          power.remove();
+        }
+        if (
+          power.style.gridRowStart == Number(position.style.gridRowStart) &&
+          power.style.gridColumnStart == Number(position.style.gridColumnStart)
+        ) {
+          ammo = ammo + 5;
+          power.remove();
+        }
+      }
+    }
+    dropDownwards();
+  }
 }
 
-/*
 function rng(chance) {
   const roll = Math.floor(Math.random() * 100);
   if (roll <= chance) {
-    console.log(`${roll}` + ` true`);
-    //return active === true;
+    dropStuff = "true";
   } else {
-    console.log(`${roll}` + ` false`);
-    //return active === false
+    dropStuff = "false";
   }
 }
-*/
