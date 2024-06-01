@@ -3,7 +3,6 @@ let spawnEnemy;
 let ammo;
 let life;
 let dropStuff = "false";
-let power;
 const him = document.getElementById("him");
 const stats = document.getElementById("stats"); // to update ammo and life values
 const position = document.getElementById("position"); // for movement of character
@@ -258,7 +257,7 @@ class Enemy {
       bullet.style.gridRowStart === this.spawnEnemy.style.gridRowStart &&
       bullet.style.gridColumnStart === this.spawnEnemy.style.gridColumnStart
     ) {
-      rng(10);
+      rng(5);
       if (dropStuff == "true") {
         this.drop();
       }
@@ -266,7 +265,7 @@ class Enemy {
   }
 
   drop() {
-    power = document.createElement("div");
+    const power = document.createElement("div"); // dont declare global
     power.classList.add("power");
     gameBorder.appendChild(power);
     power.style.gridRowStart = Number(this.spawnEnemy.style.gridRowStart);
@@ -275,16 +274,16 @@ class Enemy {
       power.style.gridRowStart = Number(power.style.gridRowStart) + 1;
       if (power.style.gridRowStart < 20) {
         setTimeout(dropDownwards, 300);
-        if (power.style.gridRowStart >= 20) {
-          power.remove();
-        }
         if (
           power.style.gridRowStart == Number(position.style.gridRowStart) &&
           power.style.gridColumnStart == Number(position.style.gridColumnStart)
         ) {
-          ammo = ammo + 5;
+          ammo = ammo + 10;
+          document.querySelector(".ammoCount").innerText = ammo;
           power.remove();
         }
+      } else {
+        power.remove();
       }
     }
     dropDownwards();
