@@ -92,6 +92,8 @@ position.style.gridRowStart = 20;
 // x-axis (left to right 1-30)
 position.style.gridColumnStart = 15;
 
+document.addEventListener("keydown", movement);
+
 function movement(event) {
   event.preventDefault();
   if (event.key === "ArrowUp") {
@@ -113,18 +115,6 @@ function movement(event) {
       checkLife(chicken.spawnEnemy);
     }
   });
-}
-
-document.addEventListener("keydown", movement);
-
-function attack(event) {
-  event.preventDefault();
-  if (event.key === " ") {
-    createProjectile();
-    ammo = ammo - 1;
-    document.querySelector(".ammoCount").innerText = ammo;
-    checkWinorLose();
-  }
 }
 
 //-------------LIFE--------------------------
@@ -153,6 +143,16 @@ function checkLife(chicken) {
 // ------------SHOOTING--------------
 
 document.addEventListener("keydown", attack);
+
+function attack(event) {
+  event.preventDefault();
+  if (event.key === " ") {
+    createProjectile();
+    ammo = ammo - 1;
+    document.querySelector(".ammoCount").innerText = ammo;
+    checkWinorLose();
+  }
+}
 
 const bulletDamage = 1;
 
