@@ -26,8 +26,8 @@ function chooseDifficulty() {
     if (i == 1) {
       difficulty.innerText = "Easy";
       difficulty.addEventListener("click", () => {
-        spawnMultiple(5);
-        setAmmo(90);
+        spawnMultiple(5, 4);
+        setAmmo(70);
         setLife(3);
         document.querySelectorAll(".button").forEach((button) => {
           button.disabled = true;
@@ -37,8 +37,8 @@ function chooseDifficulty() {
     if (i == 2) {
       difficulty.innerText = "Medium";
       difficulty.addEventListener("click", () => {
-        spawnMultiple(10);
-        setAmmo(110);
+        spawnMultiple(10, 5);
+        setAmmo(100);
         setLife(2);
         document.querySelectorAll(".button").forEach((button) => {
           button.disabled = true;
@@ -48,7 +48,7 @@ function chooseDifficulty() {
     if (i == 3) {
       difficulty.innerText = "Hard";
       difficulty.addEventListener("click", () => {
-        spawnMultiple(20);
+        spawnMultiple(20, 6);
         setAmmo(130);
         setLife(1);
         document.querySelectorAll(".button").forEach((button) => {
@@ -64,19 +64,23 @@ function setAmmo(num) {
   document.querySelector(".ammoCount").innerText = ammo;
 }
 
-function spawnMultiple(num) {
+function spawnMultiple(num, hp) {
   for (let i = 0; i < num; i++) {
-    const enemy = new Enemy(/*Math.floor(Math.random()*8)+1*/);
+    const enemy = new Enemy(hp);
     enemyGroup.push(enemy);
   }
 }
 
 function checkWinorLose() {
-  if (enemyGroup.length == 0) {
+  if (
+    enemyGroup.every((item) => {
+      return item == undefined;
+    })
+  ) {
     alert("YOU WIN !!!! :)");
     location.reload();
-  }
-  if (ammo == 0 || life == 0) {
+  } else if (ammo == 0 || life == 0) {
+    const all = document.querySelectorAll(".enemy");
     alert("YOU LOSE  T_T");
     location.reload();
   }
@@ -92,23 +96,22 @@ function movement(event) {
   event.preventDefault();
   if (event.key === "ArrowUp") {
     position.style.gridRowStart = Number(position.style.gridRowStart) - 1;
-  }
-  if (event.key === "ArrowLeft") {
+  } else if (event.key === "ArrowLeft") {
     position.style.gridColumnStart = Number(position.style.gridColumnStart) - 1;
-  }
-  if (event.key === "ArrowDown") {
+  } else if (event.key === "ArrowDown") {
     if (position.style.gridRowStart <= 19) {
       position.style.gridRowStart = Number(position.style.gridRowStart) + 1;
     }
-  }
-  if (event.key === "ArrowRight") {
+  } else if (event.key === "ArrowRight") {
     if (position.style.gridColumnStart <= 29) {
       position.style.gridColumnStart =
         Number(position.style.gridColumnStart) + 1;
     }
   }
   enemyGroup.forEach((chicken) => {
-    checkLife(chicken.spawnEnemy);
+    if (chicken != undefined) {
+      checkLife(chicken.spawnEnemy);
+    }
   });
 }
 
@@ -132,6 +135,9 @@ function setLife(num) {
 }
 
 function checkLife(chicken) {
+  if (chicken == undefined || chicken.innerText == 0) {
+    return;
+  }
   if (
     Number(position.style.gridRowStart) ===
       Number(chicken.style.gridRowStart) &&
@@ -169,13 +175,27 @@ function projectileFly() {
       bullet.style.gridRowStart = Number(bullet.style.gridRowStart) - 1;
       setTimeout(projectileFly, 300);
       for (let i = 0; i < enemyGroup.length; i++) {
-        enemyGroup[i].hit(bullet);
-        enemyGroup[i].dropCheck(bullet);
-        if (enemyGroup[i].hp === 0) {
-          enemyGroup.splice(i, 1);
-          checkWinorLose();
+        if (enemyGroup[i] != undefined) {
+          enemyGroup[i].hit(bullet);
+          enemyGroup[i].dropCheck(bullet);
+          if (enemyGroup[i].hp == 0) {
+            enemyGroup[i].spawnEnemy.remove();
+            enemyGroup[i] = undefined;
+            // enemyGroup.splice(i, 1);
+            checkWinorLose();
+          }
         }
       }
+      // const enemyDom = document.querySelectorAll(".enemy");
+      // for (let i = 0; i < enemyDom.length; i++) {
+      //   //enemyDom[i].hit(bullet);
+      //   //enemyDom[i].dropCheck(bullet);
+      //   if (enemyDom[i].innerText == 0) {
+      //     enemyDom[i].remove();
+      //     // enemyDom[i] = undefined;
+      //     checkWinorLose();
+      //   }
+      // }
     } else {
       bullet.remove();
     }
@@ -244,8 +264,7 @@ class Enemy {
       setTimeout(() => {
         this.spawnEnemy.classList.remove("onHit");
       }, 5000);
-      setTimeout;
-      if (this.hp === 0) {
+      if (this.hp <= 0) {
         this.spawnEnemy.remove();
       }
       bullet.remove();
@@ -257,7 +276,7 @@ class Enemy {
       bullet.style.gridRowStart === this.spawnEnemy.style.gridRowStart &&
       bullet.style.gridColumnStart === this.spawnEnemy.style.gridColumnStart
     ) {
-      rng(5);
+      rng(8);
       if (dropStuff == "true") {
         this.drop();
       }
@@ -278,7 +297,7 @@ class Enemy {
           power.style.gridRowStart == Number(position.style.gridRowStart) &&
           power.style.gridColumnStart == Number(position.style.gridColumnStart)
         ) {
-          ammo = ammo + 10;
+          ammo = ammo + 5;
           document.querySelector(".ammoCount").innerText = ammo;
           power.remove();
         }
