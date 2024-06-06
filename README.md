@@ -4,7 +4,7 @@ INTRODUCTION
 Welcome to Shape Invaders, a Space-Invaders inspired game where you play as a rocket shooting
 down evil yellow squares. In this varation of the classic shooter game, your ammo is limited, and running out of ammo means death! Each successful shot, however, has a chance for the squares to drop a power-up that replenishes ammo. Even if it looks like ammo is running low and all hope is lost, the fight isn't over until its over! Good luck, have fun and may RNGesus be with you.
 
-[Link Play The Game](https://faris-wong.github.io/shape_invaders/)
+[Play The Game](https://faris-wong.github.io/shape_invaders/)
 
 FEATURES
 - Power-Ups: A chance based drop which rewards accuracy.
